@@ -16,6 +16,7 @@ public class Perso {
 	int currentHP = this.maxHP;
 	int maxMP = this.lvl * 5;// + this.int * 10
 	int currentMP = this.maxMP;
+	Stuff stuff = new Stuff();
 	ArrayList<Skill> skills = new ArrayList<Skill>();
 	ArrayList<Item> inventory = new ArrayList<Item>();
 
@@ -64,7 +65,7 @@ public class Perso {
 		return (1);
 	}
 
-	public int useLifePot() {
+	public int useLifePot() {//à refaire : prendre un nom en paramettre et vérif si conso de vie
 		for (Item item : inventory) {
 			if (item.name == "lifePot") {
 				this.gainHP(20);
@@ -76,7 +77,7 @@ public class Perso {
 		return (2);
 	}
 
-	public int useManaPot() {
+	public int useManaPot() {//à refaire : prendre un nom en paramettre et vérif si conso de mana
 		for (Item item : inventory) {
 			if (item.name == "ManaPot") {
 				this.gainMP(10);
@@ -87,6 +88,63 @@ public class Perso {
 		return (2);
 	}
 
+	public int Equip(Item item) {
+		if (!item.equipment) {
+			System.out.println("This item isn't equipable");
+		} else if (item.slot == "rHand") {	
+			if (this.stuff.rHand != null) {
+				this.stuff.rHand.equiped = false;
+				if (this.stuff.rHand.type == "weapon2H") {
+					this.stuff.lHand = null;
+				}
+			}
+			this.stuff.rHand = item;
+			item.equiped = true;
+			if (item.type == "weapon2H") {
+				if (this.stuff.lHand != null) {
+					this.stuff.lHand.equiped = false;
+				}
+				this.stuff.lHand = item;
+			}
+		} else if (item.slot == "lHand") {
+			if (this.stuff.lHand != null) {
+				this.stuff.lHand.equiped = false;
+				if (this.stuff.lHand.type == "weapon2H") {
+					this.stuff.rHand = null;
+				}
+			}
+			this.stuff.lHand = item;
+			item.equiped = true;
+			if (item.type == "weapon2H") {
+				if (this.stuff.rHand != null) {
+					this.stuff.rHand.equiped = false;
+				}
+				this.stuff.rHand = item;
+			}
+		} else if (item.slot == "chest"){
+			if (this.stuff.chest != null) {
+				this.stuff.chest.equiped = false;
+			}
+			this.stuff.chest = item;
+		} else if (item.slot == "head") {
+			if (this.stuff.head != null) {
+				this.stuff.head.equiped = false;
+			}
+			this.stuff.head = item;
+		} else if (item.slot == "arms") {
+			if (this.stuff.arms != null) {
+				this.stuff.arms.equiped = false;
+			}
+			this.stuff.arms = item;
+		} else if (item.slot == "legs") {
+			if (this.stuff.legs != null) {
+				this.stuff.legs.equiped = false;
+			}
+			this.stuff.legs = item;
+		}
+		return(2);
+	}
+	
 	public int gainlvl() {
 		boolean bool = false;
 		while (!bool) {
