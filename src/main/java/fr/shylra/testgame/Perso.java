@@ -16,6 +16,7 @@ public class Perso {
 	int currentHP = this.maxHP;
 	int maxMP = this.lvl * 5;// + this.int * 10
 	int currentMP = this.maxMP;
+	int shield = 0;
 	Stuff stuff = new Stuff();
 	ArrayList<Skill> skills = new ArrayList<Skill>();
 	ArrayList<Item> inventory = new ArrayList<Item>();
@@ -89,7 +90,7 @@ public class Perso {
 	}
 
 	public int Equip(Item item) {
-		if (!item.equipment) {
+		if (item.slot == "none") {
 			System.out.println("This item isn't equipable");
 		} else if (item.slot == "rHand") {	
 			if (this.stuff.rHand != null) {
@@ -144,6 +145,29 @@ public class Perso {
 		}
 		return(2);
 	}
+	
+	public int Damages(Skill skill) {// à voir pour le nom et les ratio de dégâts
+		int damages = 0;
+		if (skill.type == "damage") {
+			for (int i = 0; i < skill.hits; i++) {
+				if (this.stuff.rHand.type == "weapon") {
+					damages += this.str + this.stuff.rHand.buffAtt + skill.buffAtt;
+					i++;
+					if (this.stuff.lHand.type == "weapon") {
+						damages += this.str + this.stuff.lHand.buffAtt + skill.buffAtt;
+						i++;
+					}
+				} else if (this.stuff.rHand.type == "weapon2H") {
+					damages += this.str * 2 + this.stuff.rHand.buffAtt + skill.buffAtt;
+					i++;
+				}
+			}
+		} else if (skill.type =="shield") {
+			this.shield += skill.shield;
+		}
+		return (damages);
+	}
+	
 	
 	public int gainlvl() {
 		boolean bool = false;
